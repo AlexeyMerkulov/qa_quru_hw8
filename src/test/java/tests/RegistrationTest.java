@@ -1,9 +1,8 @@
 package tests;
 
+import datacontainers.PracticeFormDataContainer;
 import org.junit.jupiter.api.Test;
 import pages.RegistrationPage;
-
-import static utils.RandomUtils.*;
 
 public class RegistrationTest extends TestBase {
 
@@ -11,47 +10,50 @@ public class RegistrationTest extends TestBase {
 
     @Test
     void successfulRegistrationTest() {
-        var firstName = getRandomFirstName();
-        var lastName = getRandomLastName();
-        var userEmail = getRandomEmail();
-        var gender = getRandomGender();
-        var userNumber = getRandomPhoneNumber();
-        var dayOfBirthdate = getRandomDayOfMonth();
-        var monthOfBirthdate = getRandomMonth();
-        var yearOfBirthdate = getRandomYear();
-        var subject = getRandomSubject();
-        var hobby = getRandomHobby();
-        var filePath = "selenide.jpg";
-        var address = getRandomAddress();
-        var state = getRandomState();
-        var city = getRandomCity(state);
-
+        var testData = new PracticeFormDataContainer();
         registrationPage.openPage()
                 .removeBanners()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setUserEmail(userEmail)
-                .setGender(gender)
-                .setUserNumber(userNumber)
-                .setBirthDay(dayOfBirthdate, monthOfBirthdate, yearOfBirthdate)
-                .setSubject(subject)
-                .setHobby(hobby)
-                .uploadPicture(filePath)
-                .setAddress(address)
-                .setState(state)
-                .setCity(city)
+                .setFirstName(testData.getFirstName())
+                .setLastName(testData.getLastName())
+                .setUserEmail(testData.getUserEmail())
+                .setGender(testData.getGender())
+                .setUserNumber(testData.getUserNumber())
+                .setBirthDay(
+                        testData.getDayOfBirthdate(),
+                        testData.getMonthOfBirthdate(),
+                        testData.getYearOfBirthdate()
+                )
+                .setSubject(testData.getSubject())
+                .setHobby(testData.getHobby())
+                .uploadPicture(testData.getFilePath())
+                .setAddress(testData.getAddress())
+                .setState(testData.getState())
+                .setCity(testData.getCity())
                 .submitInputData()
                 .verifyModalDialogAppeared()
-                .verifyResult("Student Name", String.format("%s %s", firstName, lastName))
-                .verifyResult("Student Email", userEmail)
-                .verifyResult("Gender", gender)
-                .verifyResult("Mobile", userNumber)
-                .verifyResult("Date of Birth", String.format("%s %s,%s", dayOfBirthdate, monthOfBirthdate, yearOfBirthdate))
-                .verifyResult("Subjects", subject)
-                .verifyResult("Hobbies", hobby)
-                .verifyResult("Picture", filePath)
-                .verifyResult("Address", address)
-                .verifyResult("State and City", String.format("%s %s", state, city));
+                .verifyResult("Student Name", String.format(
+                        "%s %s",
+                        testData.getFirstName(),
+                        testData.getLastName())
+                )
+                .verifyResult("Student Email", testData.getUserEmail())
+                .verifyResult("Gender", testData.getGender())
+                .verifyResult("Mobile", testData.getUserNumber())
+                .verifyResult("Date of Birth", String.format(
+                        "%s %s,%s",
+                        testData.getDayOfBirthdate(),
+                        testData.getMonthOfBirthdate(),
+                        testData.getYearOfBirthdate())
+                )
+                .verifyResult("Subjects", testData.getSubject())
+                .verifyResult("Hobbies", testData.getHobby())
+                .verifyResult("Picture", testData.getFilePath())
+                .verifyResult("Address", testData.getAddress())
+                .verifyResult("State and City", String.format(
+                        "%s %s",
+                        testData.getState(),
+                        testData.getCity())
+                );
     }
 }
 
